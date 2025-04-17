@@ -1,0 +1,28 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-docker.pkg.dev/shashigcp-454502/hello-world-app-repo/hello-world-app', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-docker.pkg.dev/shashigcp-454502/hello-world-app-repo/hello-world-app']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'gcloud'
+    args:
+      [
+        'run',
+        'deploy',
+        'hello-world-app',
+        '--image',
+        'us-docker.pkg.dev/shashigcp-454502/hello-world-app-repo/hello-world-app',
+        '--platform',
+        'managed',
+        '--region',
+        'us-central1',
+        '--allow-unauthenticated'
+      ]
+
+images:
+  - 'us-docker.pkg.dev/shashigcp-454502/hello-world-app-repo/hello-world-app'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
