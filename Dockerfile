@@ -1,4 +1,4 @@
-# Use the official Python image
+# Use official Python image
 FROM python:3.10-slim
 
 # Set working directory
@@ -10,8 +10,8 @@ COPY . .
 # Install dependencies
 RUN pip install -r requirements.txt
 
-# Set environment variable for Flask
-ENV PORT 8080
+# Set port
+ENV PORT=8080
 
-# Run the application
-CMD ["python", "main.py"]
+# Command to run app with Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
